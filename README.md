@@ -85,6 +85,19 @@ Harmless commands still get through. The gate logic below mirrors the Strands
 `InterventionHandler` demo 1:1; this static build ships it as an interactive,
 model-free page a judge can open in seconds.
 
+> **Hackathon scoping note (honest):** this browser demo is a **static
+> prototype** — it shows the constitution gate and the guardian-alert flow, and
+> renders the configured guardians (here: `alice`, `bob`, `carol`) on-screen.
+> It does **not** send real SMS/email/Telegram to anyone, and there is **no
+> live guardian-contact registration form in this demo**. Real-world
+> notification delivery (phone number for SMS, verified email for email,
+> Telegram bot handle) and the Guardian Setup flow (add/verify a guardian's
+> contact, require an independent confirmation before a blocked transfer is
+> released) are **production items we implement outside this hackathon demo** —
+> they need a backend + messaging provider (Twilio/Resend/Telegram Bot API) and
+> are intentionally out of scope for the static page. The production
+> `the_mast_agent.py` shows how a guardian **Confirm** quorum gates a release.
+
 ## Working code (local, model-free)
 
 THE MAST is an end-to-end Strands agent: its tools go through a
