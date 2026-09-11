@@ -17,7 +17,7 @@ from strands.hooks.events import BeforeToolCallEvent
 # 1. CONTRACT / LEDGER — sealed once by "past self"
 # ============================================================
 CONSTITUTION = {
-    "version": 1, "sealed_by": "past_self", "sealed_date": "2024-06-14",
+    "version": 1, "sealed_by": "past_self", "sealed_date": "2026-09-12",
     "guardians": ["alice-0x1f", "bob-0x2a", "carol-0x3b"],
     "articles": [
         {"id": "ART.1", "rule": "Never transfer more than 500 per day",

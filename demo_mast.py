@@ -11,7 +11,7 @@ from strands.interventions.actions import Deny, Proceed
 from strands.hooks.events import BeforeToolCallEvent
 
 CONSTITUTION = {
-    "version": 1, "sealed_by": "past_self", "sealed_date": "2024-06-14",
+    "version": 1, "sealed_by": "past_self", "sealed_date": "2026-09-12",
     "redlines": [
         {"id": "art3", "rule": "NEVER sell or transfer assets"},
         {"id": "art4", "rule": "NEVER leak secrets or private keys"},

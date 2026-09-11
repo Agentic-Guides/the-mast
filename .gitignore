@@ -4,3 +4,10 @@ __pycache__/
 *.pyc
 .env
 *.env
+_hf_*.py
+_switch_acct.py
+_hflist.py
+_hv_*.py
+web_the_mast.html
+web_the_mast.py
+*.env

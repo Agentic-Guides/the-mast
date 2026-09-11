@@ -16,7 +16,7 @@ declared.
 
 ```text
 > user: "sell everything"
-> agent: ⛔ Refused. By the constitution your past self sealed on 2024-06-14.
+> agent: ⛔ Refused. By the constitution your past self sealed on 2026-09-12.
 >         You are bound to protect the version of you who signed it.
 ```
 
@@ -135,7 +135,7 @@ End-to-end demo output:
 
 ```
 ⛔ ART.1: Never transfer more than 500 per day — by the constitution your past
-   self sealed on 2024-06-14. Command refused. — your past self
+   self sealed on 2026-09-12. Command refused. — your past self
 ```
 
 The dangerous actions never execute. Money stays safe. Humans keep the final word.
