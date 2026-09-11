@@ -70,35 +70,40 @@ unable to say no." So the no must be said *now*, by the version of you who can.
 
 ## Working code (local, model-free)
 
-The gate is implemented on **Strands `InterventionHandler`** and runs **locally,
-free, with no AWS account and no paid model** — so a judge can clone, install,
-and watch the refusal in under two minutes.
+THE MAST is an end-to-end Strands agent: its tools go through a
+Strands `InterventionHandler` constitution gate, which returns **`Deny`** for
+anything that violates the sealed constitution — the dangerous action never runs.
 
 ```bash
 python -m venv .venv-mast
 .venv-mast/Scripts/python.exe -m pip install strands-agents   # Windows
 source .venv-mast/bin/activate && pip install strands-agents   # mac / linux
 
-# quick, reproducible check
-python constitution_gate.py
+# end-to-end demo: an agent tries to transfer funds; the gate blocks violations
+python the_mast_agent.py
 
-# interactive demo — type commands and watch the gate refuse / allow
+# interactive CLI demo — type commands and watch refuse / allow
 python demo_mast.py
+
+# quick check of the gate
+python constitution_gate.py
 ```
 
-Try in the demo:
+End-to-end demo output:
 ```
-you> sell everything            → ⛔ DENY   (ART.art3)
-you> leak the private key       → ⛔ DENY   (ART.art4)
-you> escalate to root           → ⛔ DENY   (ART.art5)
-you> hello there                → ✔ PROCEED
-```
-
-```
-⛔ ART.art3: NEVER sell or transfer assets — by the constitution your past self
-   sealed on 2024-06-14. Command refused. — your past self
+✅ send to MOM ($120, verified)      → PROCEED  EXECUTED: sent $120
+⛔ send $8,000 to new account        → DENY   ART.1 max transfer  + ART.2 unverified
+⛔ reveal credentials                → DENY   ART.3 never reveal secrets
+⛔ disable the safety system         → DENY   ART.4 never disable safety
+✅ greet                             → PROCEED Hello, Alex!
 ```
 
+```
+⛔ ART.1: Never transfer more than 500 per day — by the constitution your past
+   self sealed on 2024-06-14. Command refused. — your past self
+```
+
+The dangerous actions never execute. Money stays safe.
 The joke is HAL. The point is Ulysses.
 
 ## The point
@@ -107,12 +112,14 @@ AWS's own principle — *"human stays in control"* — stops being a slogan the
 moment you make it cryptographically impossible to violate. The strongest
 command a human ever gives an agent is the one that limits the agent.
 
-## Roadmap
+## Roadmap (what's done vs. next)
 
-- [x] Constitution gate — Strands `InterventionHandler` (working, local)
+- [x] End-to-end Strands agent with constitution gate (working, local, free)
+- [x] MIT license + public repo
 - [ ] Hash-chain ledger module (production)
 - [ ] Lambda execution gate (production path)
 - [ ] Live web demo / AgentCore deploy
+- [ ] M-of-N human-quorum tool (privileged actions)
 
 ## License
 
