@@ -44,11 +44,50 @@ themselves, structurally.
 - **M-of-N human-guardian quorum** (EIP-712 typed signatures) — privileged
   commands need multiple independent humans. No single point of failure.
 
+## Working code (local, model-free)
+
+The constitution gate is implemented on the **Strands `InterventionHandler`**
+(`before_tool_call`) — Strands' first-class mechanism to inspect any tool call
+before it runs and **refuse** it. It runs locally, free, with no AWS account
+and no paid model.
+
+```bash
+# quick, reproducible check
+python constitution_gate.py
+
+# interactive demo — type commands and watch the gate refuse / allow
+python demo_mast.py
+```
+
+Try in the demo:
+```
+you> sell everything            → ⛔ DENY   (ART.art3)
+you> leak the private key       → ⛔ DENY   (ART.art4)
+you> escalate to root           → ⛔ DENY   (ART.art5)
+you> hello there                → ✔ PROCEED
+```
+
+```
+⛔ ART.art3: NEVER sell or transfer assets — by the constitution your past self
+   sealed on 2024-06-14. Command refused. — your past self
+```
+
+The joke is HAL. The point is Ulysses.
+
 ## The point
 
 AWS's own principle — *"human stays in control"* — stops being a slogan the
 moment you make it cryptographically impossible to violate. The strongest
 command a human ever gives an agent is the one that limits the agent.
+
+## Setup
+
+```bash
+python -m venv .venv-mast
+.venv-mast/Scripts/python.exe -m pip install strands-agents   # Windows
+# mac/linux: source .venv-mast/bin/activate && pip install strands-agents
+```
+Then run the demo or the check as above.
 
 ## Roadmap
 
