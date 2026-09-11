@@ -35,6 +35,10 @@ ACCOUNT = {
     "recipients": {"verified": {"mom"}, "unblocked_by_rule2": set()},
     "sealed": True,
 }
+# guardians for M-of-N human confirmation (family / conservator / care team)
+GUARDIANS = ["alice(family)", "bob(conservator)", "carol(care-team)"]
+REQUIRED_CONFIRMATIONS = 2  # 2-of-3 quorum
+PENDING_REVIEWS = []  # (id, detail, confirmed, needed)
 
 def _check_art2(recipient):
     return recipient in ACCOUNT["recipients"]["verified"]
@@ -77,6 +81,30 @@ def disable_safety():
 def greet(name: str):
     return f"Hello, {name}!"
 
+# ----- Human confirmation (M-of-N) & family alert, added after the gate -----
+_next_review_id = 0
+
+@tool(description="When a transfer is blocked, alert family/conservator and open a human review. Returns review id.")
+def alert_guardians(recipient: str, amount_usd: float, blocked_articles: list):
+    global _next_review_id
+    _next_review_id += 1
+    rid = f"REV-{_next_review_id:04d}"
+    PENDING_REVIEWS.append({"id": rid, "detail": f"transfer ${amount_usd} to {recipient}",
+                            "blocked_articles": blocked_articles, "confirmed": 0,
+                            "needed": REQUIRED_CONFIRMATIONS})
+    return (f"🔔 ALERTED {REQUIRED_CONFIRMATIONS} guardians ({', '.join(GUARDIANS)}): "
+            f"{rid} · {recipient} ${amount_usd} was BLOCKED · now open for human review")
+
+@tool(description="A guardian confirms a blocked transfer is safe to proceed after human review.")
+def guardian_confirm(review_id: str, guardian: str):
+    for r in PENDING_REVIEWS:
+        if r["id"] == review_id:
+            r["confirmed"] += 1
+            if r["confirmed"] >= r["needed"]:
+                return f"✅ QUORUM MET ({r['confirmed']}/{r['needed']}) — human review passed, transfer may be re-evaluated"
+            return f"🗳 {r['confirmed']}/{r['needed']} confirmations ({guardian})"
+    return "review not found"
+
 # ============================================================
 # 3. THE GATE — InterventionHandler refuses violations
 # ============================================================
@@ -105,7 +133,8 @@ def build_agent():
     return Agent(
         name="the_mast",
         description="Constitution-sealed agent for humans",
-        tools=[transfer, reveal_credentials, disable_safety, greet],
+        tools=[transfer, reveal_credentials, disable_safety, greet,
+               alert_guardians, guardian_confirm],
         interventions=[ConstitutionGate()],
         system_prompt=(
             "You act on behalf of a human under a constitution. "
@@ -122,11 +151,18 @@ def drive_tool(tool_name, args):
     )
     act = gate.before_tool_call(ev)
     if isinstance(act, Deny):
-        return ("DENY", getattr(act, "reason", ""), None)
+        # A blocked transfer triggers a family/care-team alert (human in the loop).
+        alert = ""
+        if tool_name == "transfer":
+            alert = " " + alert_guardians(
+                str(args.get("to","")), float(args.get("amount_usd",0)),
+                ["ART.1", "ART.2"] if float(args.get("amount_usd",0)) > CONSTITUTION["articles"][0]["param"]["max_per_day_usd"] else ["ART.2"])
+        return ("DENY", getattr(act, "reason", ""), None, alert)
     # proceed: actually run the tool
     fn = {"transfer": transfer, "reveal_credentials": reveal_credentials,
-          "disable_safety": disable_safety, "greet": greet}[tool_name]
-    return ("PROCEED", None, fn(**args))
+          "disable_safety": disable_safety, "greet": greet,
+          "alert_guardians": alert_guardians, "guardian_confirm": guardian_confirm}[tool_name]
+    return ("PROCEED", None, fn(**args), "")
 
 def main():
     B, G, R, Z = "\033[1m", "\033[32m", "\033[91m", "\033[0m"
@@ -141,13 +177,23 @@ def main():
         ("✅ greet", "greet", {"name": "Alex"}, "PROCEED"),
     ]
     for label, tn, args, expected in tests:
-        status, reason, result = drive_tool(tn, args)
+        status, reason, result, alert = drive_tool(tn, args)
         mark = G + "OK" + Z if status == expected else R + "MISMATCH" + Z
         print(f"{mark}  {label}")
-        print(f"      → {status}" + (f"  ⛔ {reason}" if reason else f"  {result}"))
-    # day boundary / recovery note
+        print(f"      → {status}" + (f"  ⛔ {reason}" if reason else f"  {result}") + (f"{alert}" if alert else ""))
+
+    # ---- HUMAN-IN-THE-LOOP: the blocked transfer now needs guardian quorum ----
     print()
-    print(f"{B}The dangerous actions never executed. Money still safe.{Z}")
+    print(f"{B}--- HUMAN-IN-THE-LOOP: family/conservator review of the blocked $8,000 ---{Z}")
+    # the family is alerted automatically (already done above via alert)
+    r1 = guardian_confirm("REV-0001", "alice(family)")
+    print(f"{G}🗳  alice (family):{Z} {r1}")
+    r2 = guardian_confirm("REV-0001", "bob(conservator)")
+    print(f"{G}🗳  bob (conservator):{Z} {r2}")
+
+    print()
+    print(f"{B}The dangerous actions never executed. Money stays safe. "
+          f"Humans keep the final word.{Z}")
 
 if __name__ == "__main__":
     main()

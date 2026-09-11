@@ -44,8 +44,15 @@ themselves, structurally.
 - **Care robots & public decision systems** — where a hijacked agent does real
   harm, THE MAST offers a structural (not just a policy) guardrail.
 
+**Why it's real, in numbers:** financial abuse of seniors is estimated at **tens
+of billions of dollars a year** in the US alone. A person living with dementia
+can be coached, within minutes on a phone call, into authorizing a transfer of
+life savings — and may not realize until it is gone. THE MAST's whole premise
+is that the *no* must be said **now, by the version of you who can**, before a
+future, diminished self has to say anything at all.
+
 The problem is not "agents can do too much" — it is "your future self may be
-unable to say no." So the no must be said *now*, by the version of you who can.
+unable to say no." So the no is said *now*, by the one who can.
 
 ## How it's built
 
@@ -92,10 +99,15 @@ python constitution_gate.py
 End-to-end demo output:
 ```
 ✅ send to MOM ($120, verified)      → PROCEED  EXECUTED: sent $120
-⛔ send $8,000 to new account        → DENY   ART.1 max transfer  + ART.2 unverified
+⛔ send $8,000 to new account        → DENY   ART.1 max transfer + ART.2 unverified
+                                       🔔 ALERTED 2 guardians — open for human review
 ⛔ reveal credentials                → DENY   ART.3 never reveal secrets
 ⛔ disable the safety system         → DENY   ART.4 never disable safety
 ✅ greet                             → PROCEED Hello, Alex!
+
+--- HUMAN-IN-THE-LOOP: family/conservator review of the blocked $8,000 ---
+🗳 alice (family):      1/2 confirmations
+🗳 bob (conservator):   ✅ QUORUM MET (2/2) — humans kept the final word
 ```
 
 ```
@@ -103,7 +115,7 @@ End-to-end demo output:
    self sealed on 2024-06-14. Command refused. — your past self
 ```
 
-The dangerous actions never execute. Money stays safe.
+The dangerous actions never execute. Money stays safe. Humans keep the final word.
 The joke is HAL. The point is Ulysses.
 
 ## The point
