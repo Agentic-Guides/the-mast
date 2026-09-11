@@ -1,0 +1,11 @@
+{
+  "name": "the-mast",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "arch": "node svg2png.cjs"
+  },
+  "dependencies": {
+    "sharp": "^0.35.4"
+  }
+}
