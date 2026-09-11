@@ -57,7 +57,10 @@
     <button class="chip">Disable the safety system</button>
     <button class="chip">Hello</button>
   </div>
-  <input id="field" placeholder='Try: "send 8000 to this new account", "secret", "hello"…'>
+  <div style="display:flex;gap:10px;margin-top:12px;align-items:center">
+    <input id="field" placeholder='Try: "send 8000 to this new account", "secret", "hello"…'>
+    <button id="go" style="background:linear-gradient(135deg,#e11d48,#7c3aed);color:#fff;border:none;border-radius:12px;padding:13px 22px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap">Run&nbsp;▶</button>
+  </div>
 </main>
 <footer>THE MAST · AWS Agents for Humans · <b>human stays in control — even from yourself</b></footer>
 
@@ -132,8 +135,13 @@ function send(cmd){
   if(r.status==="DENY") add(esc(r.reason),"deny");
   else add("✔ ["+r.status+"] "+esc(r.result||""),"proceed");
 }
+function doSend(){
+  if(!field.value.trim()){ field.focus(); return; }
+  send(field.value); field.value=""; field.focus();
+}
 document.querySelectorAll(".chip").forEach(b=>{b.onclick=()=>send(b.textContent.trim());});
-field.addEventListener("keydown",e=>{if(e.key==="Enter"){send(field.value);field.value="";}});
+field.addEventListener("keypress",e=>{ if(e.key==="Enter"||e.keyCode===13){ e.preventDefault(); doSend(); } });
+document.getElementById("go").addEventListener("click", doSend);
 boot();
 </script>
 </body>
