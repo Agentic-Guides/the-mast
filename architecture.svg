@@ -1,77 +1,119 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" font-family="Segoe UI, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="860" viewBox="0 0 1280 860" font-family="'Inter','Segoe UI',-apple-system,sans-serif">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#0b1020"/>
-      <stop offset="1" stop-color="#141a33"/>
+    <!-- background: deep charcoal like THE LAST WORD -->
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a0a0f"/>
+      <stop offset="1" stop-color="#0e0e17"/>
     </linearGradient>
-    <linearGradient id="box" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#1c2540"/>
-      <stop offset="1" stop-color="#10152b"/>
+    <!-- pink->purple gradient (THE LAST WORD accent) -->
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#e11d48"/>
+      <stop offset="1" stop-color="#7c3aed"/>
     </linearGradient>
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+    <!-- text gradient white->pink -->
+    <linearGradient id="textg" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#fb7185"/>
+    </linearGradient>
+    <!-- card gradient: slightly lighter than bg -->
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#161623"/>
+      <stop offset="1" stop-color="#0f0f18"/>
+    </linearGradient>
+    <linearGradient id="cardg" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#e11d48"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
       <feGaussianBlur stdDeviation="6" result="b"/>
       <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
+    <filter id="cardGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="#7c3aed" flood-opacity="0.25"/>
+    </filter>
+    <filter id="textGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#e11d48" flood-opacity="0.55"/>
+    </filter>
+    <filter id="refuseGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="halo" cx="50%" cy="-20%" r="80%">
+      <stop offset="0" stop-color="#e11d48" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#0a0a0f" stop-opacity="0"/>
+    </radialGradient>
   </defs>
 
-  <rect width="1200" height="800" fill="url(#bg)"/>
+  <!-- bg + top pink glow -->
+  <rect width="1280" height="860" fill="url(#bg)"/>
+  <rect width="1280" height="860" fill="url(#halo)"/>
+
+  <!-- Logo box (gradient like THE LAST WORD) -->
+  <rect x="48" y="36" width="46" height="46" rx="12" fill="url(#accent)"/>
+  <text x="71" y="67" fill="#fff" font-size="26" font-weight="800" text-anchor="middle">M</text>
 
   <!-- Title -->
-  <text x="600" y="54" fill="#ffd56b" font-size="36" font-weight="bold" text-anchor="middle">THE MAST</text>
-  <text x="600" y="82" fill="#9aa5c8" font-size="16" text-anchor="middle">Your past self sets the rules. Your future self can't break them.</text>
+  <text x="108" y="63" fill="#fff" font-size="24" font-weight="700">THE MAST</text>
+  <text x="108" y="82" fill="#9aa1b8" font-size="12" letter-spacing="1">CONSTITUTION-SEALED AGENT CONTROL</text>
 
-  <!-- Flow: Human -> Constitution -> Ledger -> Agent -> Gate -->
-  <!-- 1. Human / Guardian box (left) -->
-  <rect x="30" y="160" width="200" height="150" rx="14" fill="url(#box)" stroke="#ffd56b" stroke-width="2"/>
-  <text x="130" y="200" fill="#ffd56b" font-size="18" font-weight="bold" text-anchor="middle">Human</text>
-  <text x="130" y="226" fill="#bfc8e8" font-size="13" text-anchor="middle">writes "constitution"</text>
-  <text x="130" y="246" fill="#8fa0c4" font-size="12" text-anchor="middle">values + red lines</text>
-  <text x="130" y="270" fill="#8fa0c4" font-size="12" text-anchor="middle">(ECDSA sign)</text>
+  <!-- Toggle: AGENT / HUMAN (like THE LAST WORD) -->
+  <g transform="translate(1020,42)">
+    <rect x="0" y="0" width="210" height="34" rx="17" fill="#141422" stroke="#2a2a3c"/>
+    <text x="40" y="22" fill="#7ce3c1" font-size="12" font-weight="600" text-anchor="middle">AGENT</text>
+    <text x="170" y="22" fill="#fff" font-size="12" font-weight="600" text-anchor="middle">HUMAN</text>
+    <circle cx="168" cy="17" r="13" fill="url(#accent)"/>
+    <rect x="158" y="11" width="20" height="12" fill="url(#accent)"/>
+  </g>
 
-  <!-- 2. Constitution Contract -->
-  <rect x="280" y="160" width="200" height="150" rx="14" fill="url(#box)" stroke="#4ea6ff" stroke-width="2"/>
-  <text x="380" y="200" fill="#4ea6ff" font-size="18" font-weight="bold" text-anchor="middle">Constitution</text>
-  <text x="380" y="226" fill="#bfc8e8" font-size="13" text-anchor="middle">rules + quorum keys</text>
-  <text x="380" y="246" fill="#8fa0c4" font-size="12" text-anchor="middle">sealed once</text>
+  <!-- HERO message (gradient text like THE LAST WORD) -->
+  <text x="640" y="172" fill="url(#textg)" font-size="46" font-weight="800" text-anchor="middle" filter="url(#textGlow)">Your past self guards the future.</text>
+  <text x="640" y="204" fill="#8a90a8" font-size="15" text-anchor="middle">Seal a constitution once. The agent refuses any command that breaks it — even from you.</text>
 
-  <!-- 3. Immutable Ledger -->
-  <rect x="530" y="160" width="200" height="150" rx="14" fill="url(#box)" stroke="#5fd37b" stroke-width="2"/>
-  <text x="630" y="200" fill="#5fd37b" font-size="18" font-weight="bold" text-anchor="middle">Ledger</text>
-  <text x="630" y="226" fill="#bfc8e8" font-size="13" text-anchor="middle">SHA-256 hash chain</text>
-  <text x="630" y="246" fill="#8fa0c4" font-size="12" text-anchor="middle">append-only</text>
-  <text x="630" y="266" fill="#8fa0c4" font-size="12" text-anchor="middle">ECDSA signed</text>
+  <!-- ==== FLOW (3 steps) ==== -->
+  <!-- Step 1 Human -->
+  <rect x="160" y="290" width="240" height="260" rx="18" fill="url(#card)" stroke="#33334a" filter="url(#cardGlow)" stroke-width="1.5"/>
+  <circle cx="280" cy="330" r="22" fill="url(#accent)"/>
+  <text x="280" y="337" fill="#fff" font-size="15" font-weight="700" text-anchor="middle">1</text>
+  <text x="280" y="382" fill="#fff" font-size="19" font-weight="700" text-anchor="middle">Human writes</text>
+  <text x="280" y="404" fill="#c0c6dd" font-size="13" text-anchor="middle">constitution of values</text>
+  <text x="280" y="422" fill="#aab0cc" font-size="12" text-anchor="middle">+ red lines</text>
+  <rect x="200" y="452" width="160" height="34" rx="8" fill="#161622" stroke="#2a2a3c"/>
+  <text x="280" y="473" fill="#fb7185" font-size="12" text-anchor="middle">ECDSA sign</text>
 
-  <!-- 4. Agent -->
-  <rect x="780" y="160" width="200" height="150" rx="14" fill="url(#box)" stroke="#f0f4ff" stroke-width="2"/>
-  <text x="880" y="200" fill="#f0f4ff" font-size="18" font-weight="bold" text-anchor="middle">Agent</text>
-  <text x="880" y="226" fill="#bfc8e8" font-size="13" text-anchor="middle">Strands SDK</text>
-  <text x="880" y="246" fill="#bfc8e8" font-size="13" text-anchor="middle">Bedrock AgentCore</text>
+  <!-- Step 2 Ledger -->
+  <rect x="520" y="290" width="240" height="260" rx="18" fill="url(#card)" stroke="#33334a" filter="url(#cardGlow)" stroke-width="1.5"/>
+  <circle cx="640" cy="330" r="22" fill="url(#accent)"/>
+  <text x="640" y="337" fill="#fff" font-size="15" font-weight="700" text-anchor="middle">2</text>
+  <text x="640" y="382" fill="#fff" font-size="19" font-weight="700" text-anchor="middle">Constitution sealed</text>
+  <text x="640" y="404" fill="#c0c6dd" font-size="13" text-anchor="middle">append-only ledger</text>
+  <text x="640" y="422" fill="#aab0cc" font-size="12" text-anchor="middle">SHA-256 chain + ECDSA</text>
+  <rect x="560" y="452" width="160" height="34" rx="8" fill="#161622" stroke="#2a2a3c"/>
+  <text x="640" y="473" fill="#fb7185" font-size="12" text-anchor="middle">immutable</text>
 
-  <!-- 5. Execution Gate -->
-  <rect x="1020" y="160" width="150" height="150" rx="14" fill="url(#box)" stroke="#ff5c5c" stroke-width="2"/>
-  <text x="1095" y="200" fill="#ff5c5c" font-size="17" font-weight="bold" text-anchor="middle">Gate</text>
-  <text x="1095" y="226" fill="#bfc8e8" font-size="12" text-anchor="middle">AWS Lambda</text>
-  <text x="1095" y="246" fill="#ff5c5c" font-size="12" text-anchor="middle">REFUSE ⛔</text>
+  <!-- Step 3 Agent -->
+  <rect x="880" y="290" width="240" height="260" rx="18" fill="url(#card)" stroke="#33334a" filter="url(#cardGlow)" stroke-width="1.5"/>
+  <circle cx="1000" cy="330" r="22" fill="url(#accent)"/>
+  <text x="1000" y="337" fill="#fff" font-size="15" font-weight="700" text-anchor="middle">3</text>
+  <text x="1000" y="382" fill="#fff" font-size="19" font-weight="700" text-anchor="middle">Agent executes</text>
+  <text x="1000" y="404" fill="#c0c6dd" font-size="13" text-anchor="middle">Strands · Bedrock AgentCore</text>
+  <text x="1000" y="422" fill="#aab0cc" font-size="12" text-anchor="middle">any command</text>
+  <rect x="940" y="452" width="120" height="34" rx="8" fill="#161622" stroke="#2a2a3c"/>
+  <text x="1000" y="473" fill="#fb7185" font-size="12" text-anchor="middle">executed</text>
 
-  <!-- Arrows -->
-  <defs><marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><polygon points="0 0,10 4,0 8" fill="#9aa5c8"/></marker></defs>
-  <line x1="230" y1="235" x2="272" y2="235" stroke="#9aa5c8" stroke-width="2" marker-end="url(#arrow)"/>
-  <line x1="480" y1="235" x2="522" y2="235" stroke="#9aa5c8" stroke-width="2" marker-end="url(#arrow)"/>
-  <line x1="730" y1="235" x2="772" y2="235" stroke="#9aa5c8" stroke-width="2" marker-end="url(#arrow)"/>
-  <line x1="980" y1="235" x2="1014" y2="235" stroke="#9aa5c8" stroke-width="2" marker-end="url(#arrow)"/>
+  <!-- arrows -->
+  <defs><marker id="arr" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><polygon points="0,0 10,4 0,8" fill="url(#accent)"/></marker></defs>
+  <line x1="400" y1="420" x2="514" y2="420" stroke="#3a3a50" stroke-width="2" marker-end="url(#arr)"/>
+  <line x1="760" y1="420" x2="874" y2="420" stroke="#3a3a50" stroke-width="2" marker-end="url(#arr)"/>
 
-  <!-- Bottom: any command -> gate refuses -->
-  <rect x="280" y="420" width="650" height="120" rx="16" fill="url(#box)" stroke="#ff5c5c" stroke-width="2" filter="url(#glow)"/>
-  <text x="605" y="458" fill="#ff5c5c" font-size="17" font-weight="bold" text-anchor="middle">⛔ ANY command, from ANYONE — even your future self</text>
-  <text x="605" y="484" fill="#bfc8e8" font-size="14" text-anchor="middle">violates the constitution → the agent refuses</text>
-  <text x="605" y="508" fill="#8fa0c4" font-size="12" text-anchor="middle">"By the constitution your past self sealed on 2024-06-14. Refused."</text>
+  <!-- ==== REFUSE panel (the money moment) ==== -->
+  <rect x="300" y="620" width="680" height="130" rx="16" fill="url(#card)" stroke="#e11d48" stroke-width="1.5" filter="url(#refuseGlow)"/>
+  <text x="640" y="662" fill="#fb7185" font-size="15" font-weight="700" text-anchor="middle">⛔ ANY command, from ANYONE — even your future self</text>
+  <text x="640" y="690" fill="#c0c6dd" font-size="13" text-anchor="middle">that violates the constitution is refused at the gate</text>
+  <text x="640" y="716" fill="#aab0cc" font-size="12" text-anchor="middle">"By the constitution your past self sealed on (date). Refused."</text>
+  <line x1="640" y1="550" x2="640" y2="614" stroke="#e11d48" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arr2)"/>
+  <defs><marker id="arr2" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><polygon points="0,0 10,4 0,8" fill="#e11d48"/></marker></defs>
 
-  <line x1="605" y1="320" x2="605" y2="412" stroke="#ff5c5c" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#arrow)"/>
-
-  <!-- Bottom note -->
-  <text x="605" y="590" fill="#5fd37b" font-size="14" font-weight="bold" text-anchor="middle">Human stays in control — forever. Even from yourself.</text>
-  <text x="605" y="612" fill="#8fa0c4" font-size="12" text-anchor="middle">AWS Lambda execution gate + KMS signing + M-of-N guardian quorum (EIP-712)</text>
-
-  <!-- Footer -->
-  <text x="600" y="770" fill="#66709c" font-size="12" text-anchor="middle">THE MAST — AWS Agents for Humans · Good Neighbor track</text>
+  <!-- footer -->
+  <text x="640" y="800" fill="#6c7292" font-size="13" font-weight="600" text-anchor="middle">Human stays in control — forever. Even from yourself.</text>
+  <text x="640" y="822" fill="#4a4f68" font-size="11" text-anchor="middle">AWS Lambda execution gate · AWS KMS · M-of-N guardian quorum (EIP-712) · Strands SDK · Bedrock AgentCore</text>
 </svg>
