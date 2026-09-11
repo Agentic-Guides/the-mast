@@ -33,25 +33,52 @@ That is exactly what a hijacked AI does to a human at the moment they matter mos
 cognitive decline, coercion, a compromised account. We protect the human from
 themselves, structurally.
 
+## Who it's for / why it matters
+
+- **People living with cognitive decline or dementia** — a hijacked or confused
+  "future self" can't be pressured into draining a life's savings.
+- **People under coercion or duress** — a scam call at 3am can't talk an agent
+  into releasing funds when the constitution blocks it.
+- **Anyone with a compromised account** — a stolen key still can't reach the
+  red lines your past self set while clear-headed.
+- **Care robots & public decision systems** — where a hijacked agent does real
+  harm, THE MAST offers a structural (not just a policy) guardrail.
+
+The problem is not "agents can do too much" — it is "your future self may be
+unable to say no." So the no must be said *now*, by the version of you who can.
+
 ## How it's built
 
-- **Strands Agents SDK** on **Amazon Bedrock AgentCore Harness** — the agent.
-- **AWS Lambda execution gate** — inspects every action against the constitution
-  before it runs. Violation → refusal.
-- **AWS KMS** — signing keys.
-- **Append-only SHA-256 hash chain + ECDSA signature** — the immutable ledger.
-  No one, not even the deployment owner, can rewrite the seal.
+- **Strands Agents SDK** — the agent, and the gate. The core is Strands'
+  first-class `InterventionHandler.before_tool_call`, which inspects every tool
+  call and returns **`Deny`** to stop it before it runs. This is Strands'
+  native mechanism, used as THE MAST's constitution gate — not a hack, the SDK's
+  intended safety hook.
+- **AWS Lambda execution gate** (production path) — same check, run as a service.
+- **Immutable ledger**: append-only **SHA-256 hash chain + ECDSA signature** —
+  no one, not even the deployment owner, can rewrite the seal.
 - **M-of-N human-guardian quorum** (EIP-712 typed signatures) — privileged
   commands need multiple independent humans. No single point of failure.
 
+### Where Strands does the heavy lifting
+
+| Concern | Strands mechanism |
+|---|---|
+| Intercept every tool call | `InterventionHandler.before_tool_call` → `Deny` / `Proceed` |
+| Model-agnostic agent | `Agent` + `BedrockModel` / local model |
+| Human-in-the-loop | `Confirm` intervention + guardian quorum |
+
 ## Working code (local, model-free)
 
-The constitution gate is implemented on the **Strands `InterventionHandler`**
-(`before_tool_call`) — Strands' first-class mechanism to inspect any tool call
-before it runs and **refuse** it. It runs locally, free, with no AWS account
-and no paid model.
+The gate is implemented on **Strands `InterventionHandler`** and runs **locally,
+free, with no AWS account and no paid model** — so a judge can clone, install,
+and watch the refusal in under two minutes.
 
 ```bash
+python -m venv .venv-mast
+.venv-mast/Scripts/python.exe -m pip install strands-agents   # Windows
+source .venv-mast/bin/activate && pip install strands-agents   # mac / linux
+
 # quick, reproducible check
 python constitution_gate.py
 
@@ -80,22 +107,13 @@ AWS's own principle — *"human stays in control"* — stops being a slogan the
 moment you make it cryptographically impossible to violate. The strongest
 command a human ever gives an agent is the one that limits the agent.
 
-## Setup
-
-```bash
-python -m venv .venv-mast
-.venv-mast/Scripts/python.exe -m pip install strands-agents   # Windows
-# mac/linux: source .venv-mast/bin/activate && pip install strands-agents
-```
-Then run the demo or the check as above.
-
 ## Roadmap
 
-- [ ] Constitution contract skeleton
-- [ ] Lambda execution gate
-- [ ] Hash-chain ledger
-- [ ] Live demo / deploy
+- [x] Constitution gate — Strands `InterventionHandler` (working, local)
+- [ ] Hash-chain ledger module (production)
+- [ ] Lambda execution gate (production path)
+- [ ] Live web demo / AgentCore deploy
 
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE).
