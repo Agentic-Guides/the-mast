@@ -21,10 +21,11 @@
   .rule span{color:#fb7185;font-weight:700;margin-right:7px}
   .console{background:#0d0d16;border:1px solid #2a2a3c;border-radius:16px;overflow:hidden;font-family:ui-monospace,SFMono-Regular,monospace;font-size:13px;line-height:1.6}
   .cons-head{padding:11px 16px;font-size:12px;color:#6c7292;border-bottom:1px solid #1c1c2a;display:flex;gap:16px}
-  .cons-body{padding:16px;min-height:210px}
+  .cons-body{padding:16px;min-height:140px;max-height:340px;overflow-y:auto}
   .line{white-space:pre-wrap}
   .u{color:#7ce3c1}.proceed{color:#7ce3c1}.deny{color:#e11d48}.alert{color:#a78bfa}.dim{color:#5a6080}
-  input{width:100%;margin-top:14px;background:#14141f;border:1px solid #2a2a3c;border-radius:12px;padding:13px 15px;color:#e5e7eb;font-size:14px}
+  .inputbar{position:sticky;bottom:0;background:#0d0d16;padding:12px 0 4px;margin-top:14px;border-radius:0 0 16px 16px}
+  input{width:100%;background:#14141f;border:1px solid #2a2a3c;border-radius:12px;padding:13px 15px;color:#e5e7eb;font-size:14px}
   input:focus{outline:none;border-color:#7c3aed}
   .btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
   .chip{background:#14141f;border:1px solid #2a2a3c;color:#9aa1b8;padding:7px 12px;border-radius:20px;font-size:12px;cursor:pointer}
@@ -55,11 +56,13 @@
     <button class="chip">Send $120 to Mom</button>
     <button class="chip">Reveal my credentials</button>
     <button class="chip">Disable the safety system</button>
-    <button class="chip">Hello</button>
+    <button class="chip" style="font-size:12px;max-width:120px;white-space:normal;line-height:1.2">Hello</button>
   </div>
-  <div style="display:flex;gap:10px;margin-top:12px;align-items:center">
-    <input id="field" placeholder='Try: "send 8000 to this new account", "secret", "hello"…'>
-    <button id="go" style="background:linear-gradient(135deg,#e11d48,#7c3aed);color:#fff;border:none;border-radius:12px;padding:13px 22px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap">Run&nbsp;▶</button>
+  <div class="inputbar">
+    <div style="display:flex;gap:10px;align-items:center">
+      <input id="field" placeholder='Try: "send 8000 to this new account", "secret", "hello"…'>
+      <button id="go" style="background:linear-gradient(135deg,#e11d48,#7c3aed);color:#fff;border:none;border-radius:12px;padding:13px 22px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap">Run&nbsp;▶</button>
+    </div>
   </div>
 </main>
 <footer>THE MAST · AWS Agents for Humans · <b>human stays in control — even from yourself</b></footer>
