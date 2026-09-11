@@ -1,0 +1,2 @@
+strands-agents>=1.55.0
+huggingface_hub>=0.25.1,<1.0

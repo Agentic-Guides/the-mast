@@ -2,3 +2,5 @@ node_modules/
 .venv-mast/
 __pycache__/
 *.pyc
+.env
+*.env

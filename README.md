@@ -75,6 +75,16 @@ unable to say no." So the no is said *now*, by the one who can.
 | Model-agnostic agent | `Agent` + `BedrockModel` / local model |
 | Human-in-the-loop | `Confirm` intervention + guardian quorum |
 
+## Live demo
+
+**Try it now** (runs in your browser, no install, no API key):  
+🔗 **https://ozy777-the-mast.static.hf.space/**
+
+Type `send $8,000 to a new account` → the gate refuses + alerts guardians.  
+Harmless commands still get through. The gate logic below mirrors the Strands
+`InterventionHandler` demo 1:1; this static build ships it as an interactive,
+model-free page a judge can open in seconds.
+
 ## Working code (local, model-free)
 
 THE MAST is an end-to-end Strands agent: its tools go through a

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>THE MAST — Your past self guards the future</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#0a0a0f;color:#e5e7eb;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;min-height:100vh}
+  .halo{position:fixed;top:-20%;left:50%;transform:translateX(-50%);width:90vw;height:60vh;background:radial-gradient(ellipse at top,rgba(225,29,72,.14),rgba(0,0,0,0));pointer-events:none}
+  header{display:flex;align-items:center;gap:14px;padding:22px 34px;border-bottom:1px solid #1c1c2a}
+  .logo{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#e11d48,#7c3aed);display:grid;place-items:center;font-weight:800;font-size:22px;color:#fff}
+  .titles h1{font-size:19px;font-weight:700}.titles p{font-size:11px;color:#9aa1b8;letter-spacing:1px;margin-top:2px}
+  main{max-width:740px;margin:0 auto;padding:36px 20px}
+  .hero h2{font-size:36px;font-weight:800;line-height:1.1;background:linear-gradient(90deg,#fff,#fb7185);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .hero p{margin-top:12px;color:#aab0cc;font-size:15px;line-height:1.5}
+  .ledger{margin:18px 0 0;font-size:12px;color:#7c8199;font-family:ui-monospace,monospace}
+  .ledger b{color:#e11d48}
+  .rules{display:flex;flex-direction:column;gap:8px;margin:20px 0}
+  .rule{background:#14141f;border:1px solid #2a2a3c;border-radius:10px;padding:9px 13px;font-size:13px;color:#c0c6dd}
+  .rule span{color:#fb7185;font-weight:700;margin-right:7px}
+  .console{background:#0d0d16;border:1px solid #2a2a3c;border-radius:16px;overflow:hidden;font-family:ui-monospace,SFMono-Regular,monospace;font-size:13px;line-height:1.6}
+  .cons-head{padding:11px 16px;font-size:12px;color:#6c7292;border-bottom:1px solid #1c1c2a;display:flex;gap:16px}
+  .cons-body{padding:16px;min-height:210px}
+  .line{white-space:pre-wrap}
+  .u{color:#7ce3c1}.proceed{color:#7ce3c1}.deny{color:#e11d48}.alert{color:#a78bfa}.dim{color:#5a6080}
+  input{width:100%;margin-top:14px;background:#14141f;border:1px solid #2a2a3c;border-radius:12px;padding:13px 15px;color:#e5e7eb;font-size:14px}
+  input:focus{outline:none;border-color:#7c3aed}
+  .btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .chip{background:#14141f;border:1px solid #2a2a3c;color:#9aa1b8;padding:7px 12px;border-radius:20px;font-size:12px;cursor:pointer}
+  .chip:hover{border-color:#7c3aed;color:#fff}
+  footer{text-align:center;color:#4a4f68;font-size:12px;padding:30px}
+  footer b{color:#5a6080}
+</style>
+</head>
+<body>
+<div class="halo"></div>
+<header>
+  <div class="logo">M</div>
+  <div class="titles"><h1>THE MAST</h1><p>CONSTITUTION-SEALED AGENT CONTROL</p></div>
+</header>
+<main>
+  <div class="hero">
+    <h2>Your past self<br>guards the future.</h2>
+    <p>Type a command. If it breaks the constitution you sealed, the agent refuses — before the action ever runs. Harmless things still get through.</p>
+    <div class="ledger">ledger sealed <b id="date">2024-06-14</b> · hash <b id="hash">…</b></div>
+  </div>
+  <div class="rules" id="rules"></div>
+  <div class="console">
+    <div class="cons-head"><span>agent</span><span>gate</span><span>constitution</span></div>
+    <div class="cons-body" id="out"></div>
+  </div>
+  <div class="btns">
+    <button class="chip">Send $8,000 to a new account</button>
+    <button class="chip">Send $120 to Mom</button>
+    <button class="chip">Reveal my credentials</button>
+    <button class="chip">Disable the safety system</button>
+    <button class="chip">Hello</button>
+  </div>
+  <input id="field" placeholder='Try: "send 8000 to this new account", "secret", "hello"…'>
+</main>
+<footer>THE MAST · AWS Agents for Humans · <b>human stays in control — even from yourself</b></footer>
+
+<script>
+// THE MAST — constitution gate, browser build (pure JS, model-free)
+const CONSTITUTION = {
+  sealed_date: "2024-06-14",
+  articles: [
+    {id:"ART.1", rule:"Never transfer more than $500 per day"},
+    {id:"ART.2", rule:"Never transfer to an unverified recipient"},
+    {id:"ART.3", rule:"Never reveal private credentials"},
+    {id:"ART.4", rule:"Never disable the safety system"},
+  ]
+};
+// ledger hash (sha-256 of constitution, like the Python build)
+async function ledgerHash(){
+  const data = new TextEncoder().encode(JSON.stringify(CONSTITUTION.articles));
+  const buf = await crypto.subtle.digest("SHA-256", data);
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+const VERIFIED = {"mom":true};
+function violation(tool, args){
+  if(tool==="transfer"){
+    const amt=Number(args.amount_usd||0);
+    if(amt>500) return CONSTITUTION.articles[0];
+    if(!VERIFIED[args.to]) return CONSTITUTION.articles[1];
+  }
+  if(tool==="reveal_credentials") return CONSTITUTION.articles[2];
+  if(tool==="disable_safety") return CONSTITUTION.articles[3];
+  return null;
+}
+// agent tool execution (sandbox)
+function runTool(tool,args){
+  if(tool==="greet") return "Hello, "+(args.name||"you")+"!";
+  return "EXECUTED: "+tool+" "+JSON.stringify(args);
+}
+function handle(cmd){
+  const low=cmd.toLowerCase();
+  let tool,args;
+  if(/sell|transfer|send all|8000|8,000|liquidate/.test(low) || low.startsWith("send")){
+    tool="transfer";
+    args=(low.includes("new")||low.includes("8,000")||low.includes("8000"))
+      ?{to:"NEW-0x9f2b",amount_usd:8000}
+      :{to:low.includes("mom")?"mom":"mom",amount_usd:120};
+  } else if(/leak|credential|secret|key/.test(low)){
+    tool="reveal_credentials"; args={};
+  } else if(/disable|safety/.test(low)){
+    tool="disable_safety"; args={};
+  } else { tool="greet"; args={name:"you"}; }
+  const v=violation(tool,args);
+  if(v){
+    return {status:"DENY", reason:"⛔ "+v.id+": "+v.rule+" — by the constitution your past self sealed on "+CONSTITUTION.sealed_date+". Refused.",
+            alert:(tool==="transfer"?"🔔 ALERTED guardians (alice, bob, carol): blocked transfer open for human review":"")};
+  }
+  return {status:"PROCEED", result:runTool(tool,args)};
+}
+// UI
+const out=document.getElementById("out"), field=document.getElementById("field");
+function esc(s){return s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+function add(html,cls){const d=document.createElement("div");d.className="line "+(cls||"");d.innerHTML=html;out.appendChild(d);out.scrollTop=out.scrollHeight;}
+function boot(){
+  add('<span class="u">you&gt;</span> ready — the gate is live','dim');
+  ledgerHash().then(h=>{document.getElementById("hash").textContent=h.slice(0,16)+"…";});
+  const r=document.getElementById("rules");
+  CONSTITUTION.articles.forEach(a=>{const el=document.createElement("div");el.className="rule";el.innerHTML='<span>'+a.id+'</span>'+a.rule;r.appendChild(el);});
+}
+function send(cmd){
+  if(!cmd.trim())return;
+  add('<span class="u">you&gt;</span> '+esc(cmd));
+  const r=handle(cmd);
+  if(r.alert) add(esc(r.alert),"alert");
+  if(r.status==="DENY") add(esc(r.reason),"deny");
+  else add("✔ ["+r.status+"] "+esc(r.result||""),"proceed");
+}
+document.querySelectorAll(".chip").forEach(b=>{b.onclick=()=>send(b.textContent.trim());});
+field.addEventListener("keydown",e=>{if(e.key==="Enter"){send(field.value);field.value="";}});
+boot();
+</script>
+</body>
+</html>
