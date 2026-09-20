@@ -1,0 +1,15 @@
+# THE MAST — agents.txt
+# Capability announcement for autonomous agents and orchestrators.
+Name: THE MAST
+Tagline: Your past self sets the rules. Your future self can't break them.
+Type: open-source guard MCP / Strands InterventionHandler
+License: MIT
+Protocols: MCP (Streamable HTTP), Strands Agents SDK (InterventionHandler)
+Capabilities:
+  - gate_tool_call: block a tool call that violates the sealed constitution (SHA-256 + ECDSA ledger)
+  - permit_record: record a family's allow/deny on the tamper-evident ledger
+  - ledger_status: show the immutable evidence chain
+  - guardian_alert: alert guardians + M-of-N quorum for human-in-the-loop
+Authorization: none (public demo; deterministic core needs no API key)
+Language: Python 3.11+ (CPU-only, free, no GPU needed)
+Repo: https://github.com/Agentic-Guides/the-mast

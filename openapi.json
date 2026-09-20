@@ -1,0 +1,53 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "THE MAST",
+    "version": "1.0.0",
+    "description": "Guard for AI agents: gate tool calls against a sealed constitution and verify on a tamper-evident ledger. Deterministic, model-free, Strands InterventionHandler."
+  },
+  "servers": [{ "url": "https://github.com/Agentic-Guides/the-mast" }],
+  "paths": {
+    "/gate": {
+      "post": {
+        "summary": "Gate one tool call against the sealed constitution",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "tool_name": { "type": "string" },
+                  "arguments": { "type": "object" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Decision",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "action": { "enum": ["allow", "deny", "guardian"] },
+                    "reason": { "type": "string" },
+                    "ledger_hash": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ledger": {
+      "get": {
+        "summary": "Show the immutable evidence chain",
+        "responses": { "200": { "description": "SHA-256 hash-chain ledger" } }
+      }
+    }
+  }
+}

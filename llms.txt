@@ -1,0 +1,32 @@
+# THE MAST
+
+> **Your past self sets the rules. Your future self can't break them.**
+
+THE MAST is an open-source (MIT) guard for AI agents. A human writes a short
+**constitution** of values and red lines; THE MAST seals it once on an immutable
+ledger (SHA-256 hash chain + ECDSA signature); and from that moment the agent
+refuses **any** command — even from the human's future self — that violates what
+was declared.
+
+Built for the AWS **Agents for Humans** hackathon with the **Strands Agents SDK**.
+
+## For AI agents
+
+- **What this is**: an `InterventionHandler` (Strands SDK) that gates every tool
+  call against a sealed constitution of red lines (never sell/transfer assets,
+  never leak secrets/keys, never self-destruct/escalate privileges).
+- **What it can do**: block a tool call that violates the constitution, pin every
+  allow/deny to a tamper-evident SHA-256 chain, and alert guardians for
+  human-in-the-loop confirmation (M-of-N quorum).
+- **How to use it**: see `constitution_gate.py` (the gate), `the_mast_agent.py`
+  (wiring), and `ARCHITECTURE.md`.
+- **Key idea**: decision is a *judgment you can reuse* — the gate is
+  deterministic/local/model-free at its core, so a refusal never depends on a
+  model's mood at 3 a.m.
+
+## Key files
+
+- [constitution_gate.py](constitution_gate.py) — the gate logic (README)
+- [the_mast_agent.py](the_mast_agent.py) — Strands agent wiring
+- [demo_mast.py](demo_mast.py) — end-to-end demo
+- [ARCHITECTURE.md](ARCHITECTURE.md) — system overview

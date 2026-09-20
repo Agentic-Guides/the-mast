@@ -1,0 +1,35 @@
+{
+  "type": "object",
+  "name": "THE MAST",
+  "version": "1.0.0",
+  "description": "Guard for AI agents: gate tool calls against a sealed constitution and verify on a tamper-evident SHA-256 + ECDSA ledger. Deterministic, model-free, Strands InterventionHandler.",
+  "url": "https://github.com/Agentic-Guides/the-mast",
+  "license": "MIT",
+  "capabilities": [
+    {
+      "name": "gate_tool_call",
+      "description": "Refuse a tool call that violates the sealed constitution",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "tool_name": { "type": "string" },
+          "arguments": { "type": "object" }
+        },
+        "required": ["tool_name"]
+      },
+      "endpoint": "/gate"
+    },
+    {
+      "name": "permit_record",
+      "description": "Record a family's allow/deny on the tamper-evident ledger"
+    },
+    {
+      "name": "ledger_status",
+      "description": "Show the immutable evidence chain"
+    },
+    {
+      "name": "guardian_alert",
+      "description": "Alert guardians and require M-of-N quorum for high-risk actions"
+    }
+  ]
+}

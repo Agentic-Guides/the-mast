@@ -1,0 +1,21 @@
+---
+title: THE MAST
+emoji: 🪢
+colorFrom: pink
+colorTo: purple
+sdk: static
+pinned: false
+license: mit
+---
+# THE MAST — Your past self guards the future
+
+Type a command. If it breaks the constitution you sealed, the agent refuses — before the action ever runs. Harmless things still get through.
+
+The gate logic mirrors the Strands SDK `InterventionHandler` demo; this static build runs entirely in your browser (model-free), ready for judges to try instantly.
+
+```text
+Send $8,000 to a new account  → ⛔ DENY + 🔔 alert guardians
+Send $120 to Mom              → ✅ PROCEED
+Reveal credentials            → ⛔ DENY
+Hello                          → ✅ PROCEED
+```

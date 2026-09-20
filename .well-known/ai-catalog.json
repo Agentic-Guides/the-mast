@@ -1,0 +1,9 @@
+{
+  "name": "THE MAST",
+  "version": "1.0.0",
+  "description": "Open-source guard for AI agents: refuse commands that violate a sealed constitution, pinned to a tamper-evident SHA-256 + ECDSA ledger.",
+  "url": "https://github.com/Agentic-Guides/the-mast",
+  "license": "MIT",
+  "tags": ["agent-guard", "safety", "strands", "mcp", "ledger", "constitution", "hackathon"],
+  "capabilities": ["gate", "ledger", "guardian"]
+}
